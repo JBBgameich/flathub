@@ -2,7 +2,7 @@
     "id": "com.fribbledom.telephant",
     "sdk": "org.kde.Sdk",
     "runtime": "org.kde.Platform",
-    "runtime-version": "5.14",
+    "runtime-version": "5.15",
     "command": "telephant",
     "sdk-extensions": [
         "org.freedesktop.Sdk.Extension.golang"
