@@ -1,0 +1,43 @@
+app-id: com.revolutionarygamestudio.Thrive-Launcher
+runtime: org.freedesktop.Platform
+runtime-version: "20.08"
+base: org.electronjs.Electron2.BaseApp
+base-version: "20.08"
+sdk: org.freedesktop.Sdk
+command: thrive-launcher
+rename-desktop-file: thrive-launcher.desktop
+rename-icon: thrive-launcher
+add-extensions:
+  org.freedesktop.Platform.Compat.i386:
+    directory: lib/i386-linux-gnu
+    version: '20.08'
+finish-args:
+ - --share=ipc
+ - --socket=x11
+ - --socket=wayland
+ - --share=network
+ - --socket=pulseaudio
+
+modules:
+    - name: thrive-launcher
+      buildsystem: simple
+      build-commands:
+        - ar x thrive-launcher_1.2.7_amd64.deb
+        - tar -xf data.tar.xz
+        - cp -r usr/* /app/
+        - sed -i 's,/opt/Thrive Launcher/thrive-launcher,thrive-launcher,g' /app/share/applications/thrive-launcher.desktop
+        - mkdir -p /app/Thrive-Launcher/
+        - cp -r opt/Thrive\ Launcher/* /app/Thrive-Launcher/
+        - cp thrive-launcher /app/bin/
+        - mkdir -p /app/lib/i386-linux-gnu
+      sources:
+        - type: file
+          url: https://github.com/Revolutionary-Games/Thrive-Launcher/releases/download/v1.2.7/thrive-launcher_1.2.7_amd64.deb
+          sha256: ffd10a2b6169c27853c0554d0a24372b39d64c18b5f2e92cafc7aac7eaa43b86
+        - type: script
+          dest-filename: thrive-launcher
+          commands:
+            - echo "In launcher script"
+            - ls /app/Thrive-Launcher/
+            - zypak-wrapper /app/Thrive-Launcher/thrive-launcher $@
+            - echo "After launcher script"
